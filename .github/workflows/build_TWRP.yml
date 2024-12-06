@@ -15,19 +15,19 @@ on:
       DEVICE_TREE:
         description: 'Custom Recovery Tree' # Your already made Device Tree for TWRP
         required: true
-        default: 'https://github.com/naden01/lekno-LH8n'
+        default: 'https://github.com/negroweed/device_xiaomi_gold_recovery'
       DEVICE_TREE_BRANCH:
         description: 'Custom Recovery Tree Branch' # Your Device Tree Branch, make sure it's right.
         required: true
-        default: 'twrp-14'
+        default: 'twrp_12.1'
       DEVICE_PATH:
         description: 'Specify your Device Path' # As is, just like your DEVICE_PATH in your BoardConfig.mk
         required: true
-        default: 'device/tecno/LH8n'
+        default: 'device/xiaomi/gold'
       DEVICE_NAME:
         description: 'Specify your Device Codename' # As is, just like your PRODUCT_DEVICE in your device tree.
         required: true
-        default: 'LH8n'
+        default: 'gold'
       BUILD_TARGET:
         description: 'Specify your Build Target' # Pick among boot, recovery and vendor_boot
         required: true
@@ -45,7 +45,7 @@ on:
 jobs:
   build:
     name: Build TWRP by ${{ github.actor }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -71,7 +71,7 @@ jobs:
     - name: Set Swap Space
       uses: pierotofy/set-swap-space@master
       with:
-        swap-size-gb: 24
+        swap-size-gb: 12
         
     - name: Prepare the environment
       run: |
@@ -84,8 +84,8 @@ jobs:
     - name: Install OpenJDK
       uses: actions/setup-java@v4
       with:
-        distribution: 'zulu'
-        java-version: '8'
+        distribution: 'oracle'
+        java-version: '21'
 
     - name: Install Git-Repo
       run: |
@@ -135,12 +135,11 @@ jobs:
         fi
       continue-on-error: true
       
-    - name: Install Python 2
+    - name: Install Python 3
       if: github.event.inputs.MANIFEST_BRANCH != 'twrp-11' && github.event.inputs.MANIFEST_BRANCH != 'twrp-12.1'
       run: |
-        sudo apt -y install python2
-        cd /usr/bin
-        sudo ln -sf python2 python
+        sudo apt -y install python3
+        sudo ln -sf /usr/bin/python3 /usr/bin/python
 
     - name: Building Image 
       run: |
@@ -152,7 +151,7 @@ jobs:
       
     - name: Set Build Date # Output will be use in Release
       run: |
-        echo "BUILD_DATE=$(date +%Y%m%d)" >> $GITHUB_ENV
+        echo "BUILD_DATE=$(TZ=Asia/Makassar date +%Y%m%d)" >> $GITHUB_ENV
       
     - name: Upload to Release (boot and becovery)
       if: github.event.inputs.BUILD_TARGET == 'boot' || github.event.inputs.BUILD_TARGET == 'recovery'

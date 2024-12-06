@@ -14,19 +14,19 @@ on:
       DEVICE_TREE:
         description: 'Custom Recovery Tree'
         required: true
-        default: 'https://github.com/naden01/lekno-LH8n'
+        default: 'https://github.com/negroweed/device_xiaomi_gold_recovery'
       DEVICE_TREE_BRANCH:
         description: 'Custom Recovery Tree Branch'
         required: true
-        default: 'android-14'
+        default: 'fox_12.1'
       DEVICE_PATH:
         description: 'Specify your device path.'
         required: true
-        default: 'device/tecno/LH8n'
+        default: 'device/xiaomi/gold'
       DEVICE_NAME:
         description: 'Specify your Device Codename.'
         required: true
-        default: 'LH8n'
+        default: 'gold'
       BUILD_TARGET:
         description: 'Specify your Build Target'
         required: true
@@ -57,7 +57,7 @@ jobs:
       contents: write
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
               
     - name: Clean-up
       uses: rokibhasansagar/slimhub_actions@main
@@ -79,8 +79,8 @@ jobs:
       run: |
         mkdir -p ${GITHUB_WORKSPACE}/OrangeFox
         cd ${GITHUB_WORKSPACE}/OrangeFox
-        git config --global user.name "naden01"
-        git config --global user.email "naden.irsyad01@gmail.com"
+        git config --global user.name "eraselk"
+        git config --global user.email "eraselk@proton.me"
         git clone https://gitlab.com/OrangeFox/sync.git
         cd sync
         ./orangefox_sync.sh --branch ${{ github.event.inputs.MANIFEST_BRANCH }} --path ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ github.event.inputs.MANIFEST_BRANCH }}
@@ -109,9 +109,9 @@ jobs:
         set -e
         ${{ steps.fox_branch.outputs.value }}
 
-    - name: Set Build Date # For Build Date Info, currently using Asia/Manila
+    - name: Set Build Date # For Build Date Info, currently using Asia/Makassar
       run: |
-        echo "BUILD_DATE=$(TZ=Asia/Manila date +%Y%m%d)" >> $GITHUB_ENV
+        echo "BUILD_DATE=$(TZ=Asia/Makassar date +%Y%m%d)" >> $GITHUB_ENV
 
     - name: Check if Recovery Exist
       run: |
