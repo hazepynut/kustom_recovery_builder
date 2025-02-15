@@ -2,6 +2,7 @@ name: Build - TWRP
 
 on:
   workflow_dispatch:
+  push:
     inputs:
       MANIFEST:
         description: 'TWRP Minimal-Manifest Repository'
