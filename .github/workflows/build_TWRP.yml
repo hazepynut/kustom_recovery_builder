@@ -37,7 +37,7 @@ jobs:
     name: Build TWRP by ${{ github.actor }}
     runs-on: ubuntu-latest
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.TOKEN }}
     permissions:
       contents: write
     steps:
